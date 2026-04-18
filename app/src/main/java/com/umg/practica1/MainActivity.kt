@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.umg.practica1.ui.theme.Practica1Theme
+import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
@@ -32,11 +33,18 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun UserFormScreen(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val db = remember { AppDatabase.getDatabase(context) }
+    val userDao = db.userDao()
+    
+    // Observar los usuarios de la base de datos
+    val userList by userDao.getAllUsers().collectAsState(initial = emptyList())
+    
+    val scope = rememberCoroutineScope()
+
     var name by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
-    val userList = remember { mutableStateListOf<Users>() }
-    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -44,7 +52,7 @@ fun UserFormScreen(modifier: Modifier = Modifier) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Formulario de Usuario Pruebas", style = MaterialTheme.typography.headlineMedium)
+        Text(text = "Formulario de Usuario (Room DB)", style = MaterialTheme.typography.headlineMedium)
 
         OutlinedTextField(
             value = name,
@@ -70,12 +78,18 @@ fun UserFormScreen(modifier: Modifier = Modifier) {
         Button(
             onClick = {
                 if (name.isNotBlank() && address.isNotBlank() && phone.isNotBlank()) {
-                    userList.add(Users(name, address, phone))
-                    // Limpiar campos
-                    name = ""
-                    address = ""
-                    phone = ""
-                    Toast.makeText(context, "Usuario guardado con éxito", Toast.LENGTH_SHORT).show()
+                    val newUser = Users(name = name, address = address, phone = phone)
+                    
+                    // Guardar en la base de datos local usando una Corrutina
+                    scope.launch {
+                        userDao.insertUser(newUser)
+                        // Limpiar campos
+                        name = ""
+                        address = ""
+                        phone = ""
+                    }
+                    
+                    Toast.makeText(context, "Usuario guardado en BD", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     Toast.makeText(context, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
@@ -83,12 +97,12 @@ fun UserFormScreen(modifier: Modifier = Modifier) {
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Guardar en Memoria")
+            Text("Guardar en Base de Datos")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Lista de usuarios:", style = MaterialTheme.typography.titleMedium)
+        Text(text = "Usuarios en la Base de Datos:", style = MaterialTheme.typography.titleMedium)
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -101,6 +115,7 @@ fun UserFormScreen(modifier: Modifier = Modifier) {
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                 ) {
                     Column(modifier = Modifier.padding(8.dp)) {
+                        Text(text = "ID: ${user.id}")
                         Text(text = "Nombre: ${user.name}")
                         Text(text = "Dirección: ${user.address}")
                         Text(text = "Teléfono: ${user.phone}")
