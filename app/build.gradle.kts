@@ -63,4 +63,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+
 }
