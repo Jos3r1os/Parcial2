@@ -1,10 +1,10 @@
-package com.umg.practica1.ui.theme
+package com.umg.practica1
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "inventario")
-data class Inventario(
+@Entity(tableName = "productos")
+data class Productos(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val producto: String,
     val descripcion: String,
