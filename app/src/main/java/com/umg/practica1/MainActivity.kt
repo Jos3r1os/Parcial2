@@ -66,6 +66,8 @@ fun Greeting(navController: NavController, modifier: Modifier = Modifier) {
         Text("BIENVENIDO")
         Text("DISTRIBUIDORA JR")
 
+        Spacer(modifier = Modifier.padding(10.dp))
+
         Button(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -75,6 +77,7 @@ fun Greeting(navController: NavController, modifier: Modifier = Modifier) {
         ) {
             Text(text = "INGRESO")
         }
+        Spacer(modifier = Modifier.padding(10.dp))
 
         Button(
             modifier = Modifier

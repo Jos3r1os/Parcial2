@@ -2,6 +2,7 @@ package com.umg.practica1
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -62,6 +63,8 @@ fun Catalogo (navController: NavController){
                     Text("Stock Minimo: ${producto.stockMinimo}")
                 }
             }
+
+            Spacer(modifier = Modifier.padding(10.dp))
         }
 
     }

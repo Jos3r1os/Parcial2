@@ -2,6 +2,7 @@ package com.umg.practica1
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -60,6 +61,8 @@ fun Ingreso(navController: NavController) {
 
         Text("INGRESA UN NUEVO PRODUCTO")
 
+        Spacer(modifier = Modifier.padding(10.dp))
+
         OutlinedTextField(
             value = producto,
             onValueChange = { producto = it },
@@ -86,7 +89,11 @@ fun Ingreso(navController: NavController) {
             label = { Text("Precio") }
         )
 
+        Spacer(modifier = Modifier.padding(10.dp))
+
         Text("CATEGORIA")
+
+        Spacer(modifier = Modifier.padding(10.dp))
 
         Button(
             modifier = Modifier
@@ -108,6 +115,8 @@ fun Ingreso(navController: NavController) {
             Text(text = "ACCESORIO")
         }
 
+        Spacer(modifier = Modifier.padding(10.dp))
+
         OutlinedTextField(
             value = stockInicial,
             onValueChange = { stockInicial = it },
@@ -119,6 +128,8 @@ fun Ingreso(navController: NavController) {
             onValueChange = { stockMinimo = it },
             label = { Text("Stock Minimo") }
         )
+
+        Spacer(modifier = Modifier.padding(10.dp))
 
         Button(
             onClick = {
